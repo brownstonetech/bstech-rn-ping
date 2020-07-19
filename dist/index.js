@@ -1,0 +1,2 @@
+Object.defineProperty(exports,"__esModule",{value:true});var _BSTPing=require("./BSTPing");Object.keys(_BSTPing).forEach(function(key){if(key==="default"||key==="__esModule")return;Object.defineProperty(exports,key,{enumerable:true,get:function get(){return _BSTPing[key];}});});
+//# sourceMappingURL=index.js.map

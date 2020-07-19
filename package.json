@@ -1,0 +1,57 @@
+{
+  "name": "bstech-rn-ping",
+  "title": "React Native Ping",
+  "version": "1.0.0",
+  "description": "Run ping in background, support Android only",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "yarn build:types && yarn build:js",
+    "build:js": "babel src --root-mode upward --out-dir dist/ --extensions \".ts,.tsx\" --ignore dist/**/* --ignore types/**/* --source-maps true",
+    "build:types": "tsc --emitDeclarationOnly",
+    "clean": "rm -rf dist",
+    "start": "yarn build --watch",
+    "prepublish": "yarn clean && yarn build",
+    "format": "prettier --write \"src/**/*.ts\" \"src/**/*.js\"",
+    "lint": "tslint -p tsconfig.json",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/brownstonetech/bstech-rn-ping.git",
+    "baseUrl": "https://github.com/brownstonetech/bstech-rn-ping"
+  },
+  "keywords": [
+    "react-native","ping"
+  ],
+  "author": {
+    "name": "Miles Huang",
+    "email": "miles@bstech.ca"
+  },
+  "license": "MIT",
+  "licenseFilename": "LICENSE",
+  "readmeFilename": "README.md",
+  "peerDependencies": {
+    "react": "^16.9.0",
+    "react-native": ">=0.59.0-rc.0 <1.0.x"
+  },
+  "devDependencies": {
+    "@babel/runtime": "^7.0.0",
+    "@babel/cli": "7.4.4",
+    "@babel/core": "7.4.5",
+    "@babel/plugin-proposal-class-properties": "7.4.4",
+    "@babel/plugin-proposal-object-rest-spread": "7.4.4",
+    "@babel/preset-env": "7.4.5",
+    "@babel/preset-typescript": "7.3.3",
+    "@types/node": "^12.12.14",
+    "@types/react": "~16.9.0",
+    "@types/react-native": "^0.60.26",
+    "babel-preset-expo": "~8.0.0",
+    "prettier": "^1.18.2",
+    "react": "^16.9.0",
+    "react-native": "^0.61.4",
+    "tslint": "^5.20.1",
+    "tslint-config-prettier": "^1.18.0",
+    "typescript": "^3.7.2"
+  }
+}
