@@ -1,7 +1,7 @@
 {
   "name": "bstech-rn-ping",
   "title": "React Native Ping",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Run ping in background, support Android only",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
