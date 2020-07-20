@@ -39,10 +39,10 @@ public class PingResultParser implements Consumer<String> {
         if ( matcher.find()) {
             map.putString("type", ICMP_PACKET);
             WritableMap parsed = Arguments.createMap();
-            map.putMap("icmpPacket", parsed);
             parsed.putInt("icmpSeq", Integer.parseInt(matcher.group(1)));
             parsed.putInt("ttl", Integer.parseInt(matcher.group(2)));
             parsed.putDouble("time", Double.parseDouble(matcher.group(3)));
+            map.putMap("icmpPacket", parsed);
             pingResultHandler.accept(map);
             return;
         }
@@ -50,11 +50,11 @@ public class PingResultParser implements Consumer<String> {
         if ( matcher.find()) {
             map.putString("type", STATISTIC);
             WritableMap parsed = Arguments.createMap();
+            parsed.putDouble("min", Double.parseDouble(matcher.group(1)));
+            parsed.putDouble("avg", Double.parseDouble(matcher.group(2)));
+            parsed.putDouble("max", Double.parseDouble(matcher.group(3)));
+            parsed.putDouble("mdev", Double.parseDouble(matcher.group(4)));
             map.putMap("statistic", parsed);
-            parsed.putInt("min", Integer.parseInt(matcher.group(1)));
-            parsed.putInt("avg", Integer.parseInt(matcher.group(2)));
-            parsed.putInt("max", Integer.parseInt(matcher.group(3)));
-            parsed.putInt("mdev", Integer.parseInt(matcher.group(4)));
             pingResultHandler.accept(map);
             return;
         }
@@ -62,10 +62,10 @@ public class PingResultParser implements Consumer<String> {
         if ( matcher.find()) {
             map.putString("type", SUMMARY);
             WritableMap parsed = Arguments.createMap();
-            map.putMap("summary", parsed);
             parsed.putInt("transmitted", Integer.parseInt(matcher.group(1)));
             parsed.putInt("received", Integer.parseInt(matcher.group(2)));
             parsed.putDouble("lostPercentage", Double.parseDouble(matcher.group(3)));
+            map.putMap("summary", parsed);
             pingResultHandler.accept(map);
             return;
         }
