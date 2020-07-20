@@ -8,26 +8,32 @@ const eventEmitter = new NativeEventEmitter(BSTPing);
 export type PingEvents = 'ICMP_PACKET' | 'STATISTIC' | 'SUMMARY' | 'UNKNOWN';
 export type AllEvents = PingEvents | ('E_RUNTIME_EXCEPTION' | 'E_INVALID_PARAM' | 'PING_START' | 'PING_END');
 
-type PingEvent = {
-    type: AllEvents,
-    raw?: string,
-    icmpPacket?: {
-        icmpSeq: number,
-        ttl: number,
-        time: number,
-    },
-    statistic?: {
-        min: number,
-        avg: number,
-        max: number,
-        mdev: number
-    },
-    summary?: {
-        transmitted: number,
-        received: number,
-        lostPercentage: number
-    }
-}
+export type ICMPPacket = {
+  icmpSeq: number;
+  ttl: number;
+  time: number;
+};
+
+export type PingStatistic = {
+  min: number;
+  avg: number;
+  max: number;
+  mdev: number;
+};
+
+export type PingSummary = {
+  transmitted: number;
+  received: number;
+  lostPercentage: number;
+};
+
+export type PingEvent = {
+  type: AllEvents;
+  raw?: string;
+  icmpPacket?: ICMPPacket;
+  statistic?: PingStatistic;
+  summary?: PingSummary;
+};
 
 export function registerListener(listener: (event: PingEvent) => any): EmitterSubscription {
     return eventEmitter.addListener(eventType, listener);
