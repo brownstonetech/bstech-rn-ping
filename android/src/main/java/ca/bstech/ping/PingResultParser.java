@@ -13,9 +13,11 @@ import static ca.bstech.ping.Constants.UNKNOWN;
 
 public class PingResultParser implements Consumer<String> {
 
-    private static Pattern icmpSeqPattern = Pattern.compile("icmp_seq=([\\d]+) ttl=([\\d]+) time=([\\d\\.]+) ms");
-    private static Pattern summaryPattern = Pattern.compile("([\\d]+) packets transmitted, ([\\d]+) received, ([\\d\\.]+)% packet loss");
-    private static Pattern statisticPattern = Pattern.compile("min/avg/max/mdev ([\\d]+)/([\\d]+)/([\\d]+)/([\\d]+)");
+    private static Pattern icmpSeqPattern = Pattern.compile("icmp_seq=([\\d]+) ttl=([\\d]+) time=([\\d.]+) ms");
+    private static Pattern summaryPattern = Pattern.compile("([\\d]+) packets transmitted, ([\\d]+) received, ([\\d.]+)% packet loss");
+    private static Pattern statisticPattern = Pattern.compile("min/avg/max/mdev = ([\\d.]+)/([\\d.]+)/([\\d.]+)/([\\d.]+)");
+    private static Pattern ignorePattern1 = Pattern.compile("PING .* bytes of data\\.");
+    private static Pattern ignorePattern2 = Pattern.compile("--- .* ---");
 
     private Consumer<WritableMap> pingResultHandler;
 
@@ -25,10 +27,16 @@ public class PingResultParser implements Consumer<String> {
 
     @Override
     public void accept(String result) {
+        if ( result.length() == 0 ) return;
+        Matcher matcher = ignorePattern1.matcher(result);
+        if ( matcher.find()) return;
+        matcher = ignorePattern2.matcher(result);
+        if ( matcher.find()) return;
+
         WritableMap map = Arguments.createMap();
-        Matcher matcher = icmpSeqPattern.matcher(result);
         map.putString("raw", result);
-        if ( matcher.matches()) {
+        matcher = icmpSeqPattern.matcher(result);
+        if ( matcher.find()) {
             map.putString("type", ICMP_PACKET);
             WritableMap parsed = Arguments.createMap();
             map.putMap("icmpPacket", parsed);
@@ -39,7 +47,7 @@ public class PingResultParser implements Consumer<String> {
             return;
         }
         matcher = statisticPattern.matcher(result);
-        if ( matcher.matches()) {
+        if ( matcher.find()) {
             map.putString("type", STATISTIC);
             WritableMap parsed = Arguments.createMap();
             map.putMap("statistic", parsed);
@@ -51,7 +59,7 @@ public class PingResultParser implements Consumer<String> {
             return;
         }
         matcher = summaryPattern.matcher(result);
-        if ( matcher.matches()) {
+        if ( matcher.find()) {
             map.putString("type", SUMMARY);
             WritableMap parsed = Arguments.createMap();
             map.putMap("summary", parsed);
